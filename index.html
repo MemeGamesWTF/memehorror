@@ -61,6 +61,7 @@
 						const user_id = window.localStorage.getItem("user_id");
 						const name = window.localStorage.getItem("name");
 						if (typeof user_id === 'string' && user_id.length > 0) {
+
 							window._supabase
 								.from('scores')
 								.insert({ score: score, user_id: user_id, name: name, game: game })
@@ -71,9 +72,17 @@
 									console.log({ SendScoreError });
 								});
 						}
+
 					} catch (SendScoreError) {
 						console.log({ SendScoreError });
 					}
+				} else {
+					window.parent.postMessage({
+						type: 'SEND_SCORE',
+						score: score,
+						game: game
+					}, 'https://memegames.wtf');
+					console.log('Score message sent to parent');
 				}
 			},
 		};
